@@ -46,7 +46,19 @@ public class Main {
             throw new SQLException("faled to insert "+ name + " into author table");
          }
      }
-
+  }
+  public static void deleteAuthor(Connection connection,String name) throws SQLException{
+     String query = "DELETE FROM author WHERE Author_name = ?";
+     try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+         preparedStatement.setString(1, name);
+         int rowsDeleted = preparedStatement.executeUpdate();
+         if(rowsDeleted > 0 ){
+            System.out.println("Row with name " + name + " deleted succeffuly");
+         }
+         else{
+            throw new SQLException("FAILED TO DELETE ROW WITH name " + name);
+         }            
+     }
   }
     public static void main(String[] args) {
        // Database URL, username, and password
@@ -60,7 +72,9 @@ public class Main {
          //fetch
          fetchAuthors(connection);
          //insert
-         insertAuthor(connection, "Goku");
+         //insertAuthor(connection, "Goku");
+         //delete
+         deleteAuthor(connection, "Vegeta");
 
          //update
          //updateAuthor(connection, "Goku", "Vegeta");
