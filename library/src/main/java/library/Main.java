@@ -34,6 +34,20 @@ public class Main {
          }
       }
   }
+  public static void insertAuthor(Connection connection,String name) throws SQLException{
+     String query = "INSERT INTO author (Author_name) VALUES (?)";
+     try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+         preparedStatement.setString(1, name);
+         int rowsInserted = preparedStatement.executeUpdate();
+         if(rowsInserted > 0){
+            System.out.println("inserted successfully");
+         }
+         else{
+            throw new SQLException("faled to insert "+ name + " into author table");
+         }
+     }
+
+  }
     public static void main(String[] args) {
        // Database URL, username, and password
        String url = "jdbc:mysql://localhost:3306/library";
@@ -41,16 +55,18 @@ public class Main {
        String password = "";
        // try to open connection
        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-          
          System.out.println("Connected to the database successfully!");
          // Create a Statement object
-         //read
+         //fetch
          fetchAuthors(connection);
-          //update
-         updateAuthor(connection, "Goku", "Vegeta");
-         fetchAuthors(connection);
+         //insert
+         insertAuthor(connection, "Goku");
 
-          //delete
+         //update
+         //updateAuthor(connection, "Goku", "Vegeta");
+         //fetch
+         fetchAuthors(connection);
+          
           //create
           //join
           //inner join
