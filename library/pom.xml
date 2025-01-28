@@ -13,6 +13,13 @@
     </properties>
     <dependencies>
        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter</artifactId>
+          <version>5.10.0</version> <!-- Use the latest version -->
+          <scope>test</scope>
+       </dependency>
+
+       <dependency>
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
           <version>8.0.33</version>
@@ -20,16 +27,38 @@
     </dependencies>
 
         <build>
-        <plugins>
+           <plugins>
+               <plugin>
+                   <groupId>org.apache.maven.plugins</groupId>
+                   <artifactId>maven-compiler-plugin</artifactId>
+                   <version>3.11.0</version>
+                   <configuration>
+                      <release>22</release>
+                   </configuration>
+            </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <release>22</release>
-                </configuration>
+               <artifactId>maven-assembly-plugin</artifactId>
+               <version>3.7.1</version>
+               <configuration>
+                  <descriptorRefs>
+                     <descriptorRef>jar-with-dependencies</descriptorRef>
+                  </descriptorRefs>
+                    <archive>
+                     <manifest>
+                        <mainClass>library.Main</mainClass>
+                     </manifest>
+                  </archive>   
+               </configuration>
+               <executions>
+                  <execution>
+                      <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                      <phase>package</phase> <!-- bind to the packaging phase -->
+                      <goals>
+                         <goal>single</goal>
+                      </goals>
+                  </execution>
+               </executions>
             </plugin>
         </plugins>
-    </build>
-
+       </build>
 </project>

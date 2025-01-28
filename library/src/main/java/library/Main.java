@@ -74,10 +74,10 @@ public class Main {
          //insert
          //insertAuthor(connection, "Goku");
          //delete
-         deleteAuthor(connection, "Vegeta");
+         //deleteAuthor(connection, "Vegeta");
 
          //update
-         //updateAuthor(connection, "Goku", "Vegeta");
+         updateAuthor(connection, "Vegeta", "Trunks");
          //fetch
          fetchAuthors(connection);
           
