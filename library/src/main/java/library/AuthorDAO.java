@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class AuthorDAO {
     public List<Author> fetchAuthors()throws SQLException{
         String query = "SELECT * FROM author";
         List<Author> authors = new ArrayList<>();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery()){
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query)){
                 while(resultSet.next()){
                     String name = resultSet.getString("Author_name");
                     Author author = new Author(name);

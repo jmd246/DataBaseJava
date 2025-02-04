@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
-      
        // try to open connection
        Connection connection = PSQLConnectionUtility.getConnection();
        try {
@@ -14,21 +13,21 @@ public class Main {
          AuthorDAO authorDAO = new AuthorDAO(connection);
          //fetch
          authorDAO.fetchAuthors();
-         Author goku = new Author("Goku");
+         //Author goku = new Author("Goku");
          //insert
-         authorDAO.insertAuthor(goku);
-         authorDAO.fetchAuthors();
+         //authorDAO.insertAuthor(goku);
+         //authorDAO.fetchAuthors();
          //delete
 
-         authorDAO.deleteAuthor(goku);
+         //authorDAO.deleteAuthor(goku);
 
-         authorDAO.fetchAuthors();
+         //authorDAO.fetchAuthors();
          // Author trunks = authorDAO.fetchAuthor("Trunks");
          // Author vegeta = new Author("Vegeta");
          //update
          //authorDAO.updateAuthor(trunks,vegeta);
          
-         authorDAO.fetchAuthors();
+         //authorDAO.fetchAuthors();
          
          //fetch
          //fetchAuthors(connection);

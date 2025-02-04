@@ -1,0 +1,18 @@
+# Ignore compiled Java classes and JARs
+*.class
+*.jar
+
+# Ignore IDE and OS-specific files
+/.idea/
+/.vscode/
+*.iml
+*.log
+.DS_Store
+
+# Ignore build directories
+/build/
+/out/
+/target/
+
+# Ignore user-specific configuration files
+library/src/main/resources/library.properties
