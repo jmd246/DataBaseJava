@@ -7,20 +7,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthorDAO {
+public class AuthorDAO implements MemberDAO <Author,Long>{
     private final Connection connection;
     public AuthorDAO(Connection connection){
         this.connection = connection;
     }
     //fetch all authors
-    public Author fetchAuthor(String name) throws SQLException{
-        String query = "SELECT * FROM author WHERE author_name = ?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
-            preparedStatement.setString(1, name);
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
+    @Override
+    public Author findByID(Long id) throws SQLException {
+        String query = "SELECT * FROM author WHERE author_id = ?";
+        try(PreparedStatement prepStatement = connection.prepareStatement(query)){
+            prepStatement.setLong(1, id);
+            try(ResultSet resultSet = prepStatement.executeQuery()){
                 if(resultSet.next()){
-                    String authorName = resultSet.getString("Author_name");
-                    return new Author(authorName);
+                    String authorName = resultSet.getString("author_name");
+                    return new Author(authorName,id);
                 }
                 else{
                     return null;
@@ -28,22 +29,42 @@ public class AuthorDAO {
             }
         }
     }
-    
-    public List<Author> fetchAuthors()throws SQLException{
+    @Override
+    public Author findByName(String name) throws SQLException{
+        String query = "SELECT * FROM author WHERE author_name = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setString(1, name);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                if(resultSet.next()){
+                    String authorName = resultSet.getString("author_name");
+                    Long id = resultSet.getLong("author_id");
+                    return new Author(authorName,id);
+                }
+                else{
+                    return null;
+                }
+            }
+        }
+    }
+    @Override
+    public List<Author> findaAll()throws SQLException{
         String query = "SELECT * FROM author";
         List<Author> authors = new ArrayList<>();
         try(Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query)){
                 while(resultSet.next()){
-                    String name = resultSet.getString("Author_name");
-                    Author author = new Author(name);
+                    String name = resultSet.getString("author_name");
+                    Long id = resultSet.getLong("author_id");
+                    Author author = new Author(name,id);
                     authors.add(author);
                 }
         }
         printAuthors(authors);
         return authors;
     }
-    public void insertAuthor(Author newAuthor) throws SQLException{
+    
+    @Override
+    public void insert(Author newAuthor) throws SQLException{
         String query = "INSERT INTO author (Author_name) VALUES (?)";
         try( PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1, newAuthor.getName());
@@ -56,30 +77,33 @@ public class AuthorDAO {
             }
         }
     }
-    public void updateAuthor(Author oldAuthor, Author newAuthor) throws SQLException{
-        String query = "UPDATE author SET Author_name = ? WHERE Author_name = ?";
+    @Override
+    public void update(Author author) throws SQLException{
+        String query = "UPDATE author SET author_name = ? WHERE author_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
-            preparedStatement.setString(1, newAuthor.getName());
-            preparedStatement.setString(2, oldAuthor.getName());
+            preparedStatement.setString(1, author.getName());
+            preparedStatement.setLong(2, author.getID());
             int rowsUpdated = preparedStatement.executeUpdate();
             if(rowsUpdated > 0){
                 System.err.println("Update Succesfully");
             }
             else{
-                throw new SQLException("Failed to update Author_name "+ oldAuthor.getName() + " to new name "+ newAuthor.getName());
+                throw new SQLException("Failed to update Author_name to new name "+ author.getName());
             }
         }
     }
-    public void deleteAuthor(Author author) throws SQLException{
-        String query = "DELETE FROM author WHERE Author_name = ?";
+    @Override
+    public void delete(Long id) throws SQLException{
+        if(this.findByID(id) == null) return;
+        String query = "DELETE FROM author WHERE author_id = ?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
-            preparedStatement.setString(1, author.getName());
+            preparedStatement.setLong(1, id);
             int rowsDeleted = preparedStatement.executeUpdate();
             if(rowsDeleted > 0 ){
-               System.out.println("Row with name " + author.getName() + " deleted succeffuly");
+               System.out.println(" deleted succeffuly");
             }
             else{
-               throw new SQLException("FAILED TO DELETE ROW WITH name " + author.getName());
+               throw new SQLException("FAILED TO DELETE ROW WITH id " + id);
             }            
         }
      }

@@ -1,18 +1,13 @@
 package library;
 
-public class Author {
-    private String name;
-    public Author(String name){
-        this.name = name;
+public class Author extends Person{
+
+    public Author(String name,Long id){
+        super(name,id);
     }
-    public String getName(){
-        return this.name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
+ 
     @Override
     public String toString(){
-        return "Author name " + name; 
+        return "Author name " + name + " Author ID is " + this.id; 
     }
 }

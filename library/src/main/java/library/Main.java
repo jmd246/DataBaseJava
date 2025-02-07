@@ -12,7 +12,9 @@ public class Main {
          System.out.println("Connected to the database successfully!");
          AuthorDAO authorDAO = new AuthorDAO(connection);
          //fetch
-         authorDAO.fetchAuthors();
+         //authorDAO.fetchAuthors();
+         Author author = authorDAO.findByName("Stephen King");
+         System.err.println("author name " + author.toString());
          //Author goku = new Author("Goku");
          //insert
          //authorDAO.insertAuthor(goku);
