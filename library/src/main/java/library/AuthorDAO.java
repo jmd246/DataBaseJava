@@ -47,7 +47,7 @@ public class AuthorDAO implements MemberDAO <Author,Long>{
         }
     }
     @Override
-    public List<Author> findaAll()throws SQLException{
+    public List<Author> findAll()throws SQLException{
         String query = "SELECT * FROM author";
         List<Author> authors = new ArrayList<>();
         try(Statement statement = connection.createStatement();
@@ -59,7 +59,6 @@ public class AuthorDAO implements MemberDAO <Author,Long>{
                     authors.add(author);
                 }
         }
-        printAuthors(authors);
         return authors;
     }
     
@@ -71,6 +70,7 @@ public class AuthorDAO implements MemberDAO <Author,Long>{
             int rowsInserted = preparedStatement.executeUpdate();
             if(rowsInserted > 0){
                 System.out.println("Inserted " + newAuthor.getName() + " successfully");
+                
             }
             else{
                 throw new SQLException("failed to insert author " + newAuthor.getName());
@@ -105,11 +105,6 @@ public class AuthorDAO implements MemberDAO <Author,Long>{
             else{
                throw new SQLException("FAILED TO DELETE ROW WITH id " + id);
             }            
-        }
-     }
-     public void printAuthors(List<Author> authors){
-        for(Author author : authors){
-           System.out.println(author.getName());
         }
      }
 }

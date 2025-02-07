@@ -1,6 +1,9 @@
 package library;
 
 public class User extends Person{
+    public User(String name){
+        super(name);
+    }
     public User(String name,Long id){
         super(name,id);
     }
