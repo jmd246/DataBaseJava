@@ -4,11 +4,11 @@ import java.util.List;
 
 public abstract class Person {
     String name;
-    Long id;
+    long id;
     public Person(String name){
         this.name = name;
     }
-    public Person(String name,Long id){
+    public Person(String name,long id){
         this.name =  name;
         this.id = id;
     }
@@ -18,7 +18,7 @@ public abstract class Person {
     public String getName(){
         return this.name;
     }
-    public Long getID(){
+    public long getID(){
         return this.id;
     }
     public static void printUsers(List<Person> users){

@@ -14,6 +14,8 @@ public class Main {
          System.out.println("Connected to the database successfully!");
          AuthorDAO authorDAO = new AuthorDAO(connection);
          UserDAO userDAO = new UserDAO(connection);
+         BookDAO bookDAO = new BookDAO(connection);
+
          //fetch
          //authorDAO.fetchAuthors();
          User mike = new User("Mike");
@@ -31,7 +33,15 @@ public class Main {
          userDAO.update(mike);
 
          userDAO.delete(mike.getID());
-         
+         List<Book> books = bookDAO.findAll();
+         for(Book book : books){
+          System.out.println(book);
+         }
+         Book salemsLot = bookDAO.findByName("Salems Lot"); 
+         System.out.println(salemsLot);
+         bookDAO.delete(salemsLot.getID());
+         //bookDAO.insert(salemsLot);
+
          
 
 
