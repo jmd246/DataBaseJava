@@ -1,13 +1,40 @@
 package library;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.javalin.Javalin;
+import io.javalin.http.Context;
+import library.utilities.PSQLConnectionUtility;
 public class Main {
+    public static void javalinSetup(){
+      //javalin test 
+      Javalin app = Javalin.create().start(7000);
+      //endpoints
+      app.get("/hello-world", ctx->{
+         ctx.result("Hello world");
+      });
+      app.post("/joshua", ctx->{
+        ctx.result("Hello joshua");
+      });
+      //static method reference in error mapping
+      app.error(404,Main::NotFoundHandler);
+
+      //static method reference exception mapping
+      app.exception(Exception.class, Main::genericExceptionHandler);
+    }
+    private static void genericExceptionHandler(Exception e,Context ctx){
+       ctx.result("Oops something went wrong: "+e.getClass() + "\n" + e.getMessage());
+    }
+    private static void NotFoundHandler(Context ctx){
+       ctx.result("Resource not found");
+    }
+
     public static void main(String[] args) {
-       // try to open connection
+      //javalin test
+      javalinSetup();
+      // try to open connection
        Connection connection = PSQLConnectionUtility.getConnection();
        try {
          System.out.println(connection.isValid(5));

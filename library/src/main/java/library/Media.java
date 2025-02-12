@@ -2,7 +2,6 @@ package library;
 public abstract class Media {
     private String name;
     private long id;
-
     public Media(String name){
         this.name = name;
     }
@@ -23,10 +22,5 @@ public abstract class Media {
         return id;
     } 
     @Override 
-    public abstract String toString();
-
-
-
-    
-    
+    public abstract String toString();  
 }

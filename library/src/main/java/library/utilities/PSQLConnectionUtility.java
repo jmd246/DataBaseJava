@@ -1,4 +1,4 @@
-package library;  
+package library.utilities;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class PSQLConnectionUtility {
 
    
-  static Connection getConnection(){
+  public static Connection getConnection(){
        // Example of accessing the properties
       SetEnviornmentVariables.configureVariables();                 
       String url=System.getProperty("url"),user = System.getProperty("user_name"),password = System.getProperty("password") ;    
