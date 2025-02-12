@@ -10,7 +10,7 @@ public class PSQLConnectionUtility {
   public static Connection getConnection(){
        // Example of accessing the properties
       SetEnviornmentVariables.configureVariables();                 
-      String url=System.getProperty("url"),user = System.getProperty("user_name"),password = System.getProperty("password") ;    
+      String url = System.getProperty("url"),user = System.getProperty("user_name"),password = System.getProperty("password") ;    
       Connection connection = null;
       try{
          connection = DriverManager.getConnection(url, user, password);

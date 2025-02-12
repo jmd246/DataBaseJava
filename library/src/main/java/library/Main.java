@@ -4,10 +4,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import library.utilities.PSQLConnectionUtility;
+
 public class Main {
+  
     public static void javalinSetup(){
       //javalin test 
       Javalin app = Javalin.create().start(7000);
@@ -32,6 +37,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
+      Logger log = LoggerFactory.getLogger(Main.class);
       //javalin test
       javalinSetup();
       // try to open connection
@@ -89,7 +95,13 @@ public class Main {
         } 
         catch (SQLException e) {
            System.out.println("Failed to connect to the database.");
-           e.printStackTrace();
+           log.error("Sql Exception occured",e);
+           //e.printStackTrace();
+        }
+        catch(NullPointerException e){
+         System.out.println("Failed to get data.");
+         log.error("Exception occured",e);
+         //e.printStackTrace();
         }
     }
 }
