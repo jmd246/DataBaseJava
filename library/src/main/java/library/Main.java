@@ -9,6 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import library.DAOs.AuthorDAO;
+import library.DAOs.BookDAO;
+import library.DAOs.UserDAO;
+import library.Model.Author;
+import library.Model.Book;
+import library.Model.User;
 import library.utilities.PSQLConnectionUtility;
 
 public class Main {
@@ -56,9 +62,11 @@ public class Main {
          mike = userDAO.findByName(mike.getName());
 
          Author author = authorDAO.findByName("Stephen King");
-         List<Person> users = new ArrayList<>(userDAO.findAll());
-         users.addAll(new ArrayList<>(authorDAO.findAll()));
-         Person.printUsers(users);
+         List<User> users = new ArrayList<>();
+         users = userDAO.findAll();
+         for(User user : users){
+            System.out.println(user);
+         }
          System.err.println("author name " + author.toString());
 
          mike.setName("Mike");

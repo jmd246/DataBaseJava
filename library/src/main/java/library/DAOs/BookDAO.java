@@ -1,5 +1,4 @@
-package library;
-
+package library.DAOs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import library.Model.Book;
 
 
 public class BookDAO implements MemberDAO<Book, Long> {
@@ -17,7 +18,7 @@ public class BookDAO implements MemberDAO<Book, Long> {
     }
 
     @Override
-    public void insert(Book entity) throws SQLException {
+    public Book insert(Book entity) throws SQLException {
         String query = "INSERT INTO book (title, isbn, author_id) VALUES(?, ?, (SELECT author_id FROM author WHERE author_name = ?))";
         try(PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1, entity.getName());
@@ -27,15 +28,13 @@ public class BookDAO implements MemberDAO<Book, Long> {
             if(rowsInserted > 0){
                 try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
                     if(generatedKeys.next()){
-                        entity.setBookID(generatedKeys.getLong(1));
+                        System.out.println("Inserted " + entity + " Successfully");
+                        return new Book(entity.getName(), entity.getAuthorName(), entity.getISBN(), entity.getAuthorID(),generatedKeys.getLong(1));
                     }
                 }
-                System.out.println("Inserted " + entity + " Successfully");
-            }
-            else{
-                throw new SQLException("Failed to insert " + entity );
             }
         }
+        return null;
     }
 
     @Override

@@ -1,12 +1,3 @@
-library\MemberDAO.class
-library\UserDAO.class
 library\utilities\PSQLConnectionUtility.class
-library\Person.class
-library\AuthorDAO.class
-library\Media.class
-library\User.class
 library\utilities\SetEnviornmentVariables.class
-library\Author.class
-library\BookDAO.class
 library\Main.class
-library\Book.class

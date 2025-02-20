@@ -1,4 +1,4 @@
-package library;
+package library.Model;
 
 public class Book extends Media{
     private String authorName;

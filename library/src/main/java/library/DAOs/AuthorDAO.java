@@ -1,4 +1,4 @@
-package library;
+package library.DAOs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import library.Model.Author;
 
 public class AuthorDAO implements MemberDAO <Author,Long>{
     private final Connection connection;
@@ -63,19 +65,20 @@ public class AuthorDAO implements MemberDAO <Author,Long>{
     }
     
     @Override
-    public void insert(Author newAuthor) throws SQLException{
+    public Author insert(Author newAuthor) throws SQLException{
         String query = "INSERT INTO author (Author_name) VALUES (?)";
-        try( PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try( PreparedStatement preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1, newAuthor.getName());
             int rowsInserted = preparedStatement.executeUpdate();
             if(rowsInserted > 0){
-                System.out.println("Inserted " + newAuthor.getName() + " successfully");
-                
-            }
-            else{
-                throw new SQLException("failed to insert author " + newAuthor.getName());
+                try(ResultSet key = preparedStatement.getGeneratedKeys() ){
+                    if(key.next()){
+                        return new Author(newAuthor.getName(), key.getLong(1));
+                    }
+                }
             }
         }
+        return null;
     }
     @Override
     public void update(Author author) throws SQLException{
@@ -86,7 +89,7 @@ public class AuthorDAO implements MemberDAO <Author,Long>{
             int rowsUpdated = preparedStatement.executeUpdate();
             if(rowsUpdated > 0){
                 System.err.println("Update Succesfully");
-            }
+            }   
             else{
                 throw new SQLException("Failed to update Author_name to new name "+ author.getName());
             }

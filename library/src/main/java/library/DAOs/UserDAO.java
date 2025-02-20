@@ -1,4 +1,4 @@
-package library;
+package library.DAOs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import library.Model.User;
+
 
 public class UserDAO implements MemberDAO<User, Long>{
     private final Connection connection;
@@ -14,19 +16,21 @@ public class UserDAO implements MemberDAO<User, Long>{
         this.connection = connection;
     }
     @Override
-    public void insert(User entity) throws SQLException {
+    public User insert(User entity) throws SQLException {
         String query = "INSERT INTO user (name) VALUES (?)";
 
-        try(PreparedStatement prepStatement = connection.prepareStatement(query)){
+        try(PreparedStatement prepStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS)){
             prepStatement.setString(1, entity.getName());
             int rowsInsert = prepStatement.executeUpdate();
             if(rowsInsert > 0){
-                System.err.println("User with name " + entity.getName() + " has been successfuly inserted and has an id of " + findByName(entity.getName()) );
-            }
-            else{
-                throw new SQLException("Failed to insert new user");
+                try(ResultSet key = prepStatement.getGeneratedKeys()){
+                    if(key.next()){
+                        return new User(entity.getName(),key.getLong(1));
+                    }
+                }
             }
         }
+        return null;
     }
 
     @Override

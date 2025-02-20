@@ -1,4 +1,4 @@
-package library;
+package library.Model;
 
 public class Author extends Person{
     public Author(String name){

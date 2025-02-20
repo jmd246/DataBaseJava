@@ -1,4 +1,4 @@
-package library;
+package library.Model;
 public abstract class Media {
     private String name;
     private long id;
